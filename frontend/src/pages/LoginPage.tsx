@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../api/axios";
+import axios from "axios";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -16,9 +17,9 @@ const LoginPage = () => {
       });
       // TODO: Redirect to products page.
       localStorage.setItem("token", response.data.token);
-    } catch (err: any) {
+    } catch (err) {
       console.log(err);
-      if (err.response.data.message) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
         setError("Unexpected error occurred.");
