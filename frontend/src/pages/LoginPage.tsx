@@ -16,9 +16,13 @@ const LoginPage = () => {
       });
       // TODO: Redirect to products page.
       localStorage.setItem("token", response.data.token);
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      setError(err.response.data.message);
+      if (err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Unexpected error occurred.");
+      }
     }
 
   };
