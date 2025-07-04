@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'konovo' => [
+        'url' => env('KONOVO_API_URL'),
+    ],
 
 ];
