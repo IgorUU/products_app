@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -22,3 +23,5 @@ Route::post('/login', function (Request $request) {
   Log::error('Login failed: ' . $response->body());
   return response()->json(['message' => 'Invalid credentials'], 401);
 });
+
+Route::get('/products', [ProductController::class, 'index']);
