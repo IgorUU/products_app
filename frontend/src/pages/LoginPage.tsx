@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../api/axios";
+import { loginUser } from "../api/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,11 +13,8 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/api/login", {
-        username,
-        password,
-      });
-      localStorage.setItem("token", response.data.token);
+      const response = await loginUser({username, password});
+      localStorage.setItem("token", response.token);
       navigate("/products");
     } catch (err) {
       console.log(err);
@@ -27,7 +24,6 @@ const LoginPage = () => {
         setError("Unexpected error occurred.");
       }
     }
-
   };
 
   return (
