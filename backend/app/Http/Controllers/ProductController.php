@@ -20,14 +20,14 @@ class ProductController extends Controller
   public function index(Request $request): JsonResponse
   {
     try {
-      $token = $this->extractToken($request);
+      $token = $request->cookie('auth_token');
 
       if (!$token) {
         return response()->json(['message' => 'Authorization token required'], 401);
       }
 
       $response = Http::withHeaders([
-        'Authorization' => $token,
+        'Authorization' => "Bearer {$token}",
       ])->get(config('services.konovo.url') . '/products');
 
       if (!$response->successful()) {
@@ -43,17 +43,6 @@ class ProductController extends Controller
       Log::error('Products endpoint error: ' . $e->getMessage());
       return response()->json(['message' => 'Internal server error'], 500);
     }
-  }
-
-  protected function extractToken(Request $request): ?string
-  {
-    $authorization = $request->header('Authorization');
-
-    if (!$authorization || !str_starts_with($authorization, 'Bearer ')) {
-      return NULL;
-    }
-
-    return $authorization;
   }
 
 }

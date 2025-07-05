@@ -12,3 +12,7 @@ export const loginUser = async (credentials: LoginCredentials): Promise<LoginRes
   const response = await api.post("/api/login", credentials);
   return response.data;
 }
+
+export const logoutUser = async () => {
+  await api.post("/api/logout");
+}

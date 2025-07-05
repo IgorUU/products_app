@@ -13,8 +13,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await loginUser({username, password});
-      localStorage.setItem("token", response.token);
+      await loginUser({username, password});
       navigate("/products");
     } catch (err) {
       console.log(err);
