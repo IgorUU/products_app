@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../api/products";
+import { fetchProducts, fetchCategories } from "../api/products";
 import Product from "../components/Product";
 import LogoutUser from "../components/Logout";
 import ProductFilters from "../components/ProductFilters";
@@ -23,7 +23,22 @@ const ProductsPage = () => {
   const [error, setError] = useState("");
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
   const debouncedSearch = useDebounce(search, 1000);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const categories = await fetchCategories();
+        setCategories(categories);
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+        // Don't set error here, just log it
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -48,11 +63,6 @@ const ProductsPage = () => {
 
   if (loading) return <p>Loading products...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-
-  // Extract unique categories from products
-  const categories = Array.from(
-    new Set(products.map((p) => p.categoryName).filter(Boolean))
-  );
 
   return (
     <>

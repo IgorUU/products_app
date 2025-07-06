@@ -10,3 +10,4 @@ Route::post('/login', [UserAuthController::class, 'login']);
 Route::post('/logout', [UserAuthController::class, 'logout']);
 Route::get('/user', [UserAuthController::class, 'user']);
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/categories', [ProductController::class, 'categories']);

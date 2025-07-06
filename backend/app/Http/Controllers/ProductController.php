@@ -7,6 +7,7 @@ use App\Services\ProductTransformationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -43,6 +44,45 @@ class ProductController extends Controller
       return response()->json($filtered_products);
     } catch (\Exception $e) {
       Log::error('Products endpoint error: ' . $e->getMessage());
+      return response()->json(['message' => 'Internal server error'], 500);
+    }
+  }
+
+  /**
+   * Get product categories.
+   */
+  public function categories(Request $request): JsonResponse
+  {
+    try {
+      $token = $request->cookie('auth_token');
+
+      if (!$token) {
+        return response()->json(['message' => 'Authorization token required'], 401);
+      }
+
+      $categories = Cache::remember('product_categories', 3600, function () use ($token) {
+        $response = Http::withHeaders([
+          'Authorization' => "Bearer {$token}",
+        ])->get(config('services.konovo.url') . '/products');
+
+        if (!$response->successful()) {
+          Log::error('Konovo API error: ' . $response->body());
+          return response()->json(['message' => 'Internal server error'], 500);
+        }
+
+        $products = $response->json();
+
+        return collect($products)
+          ->pluck('categoryName')
+          ->filter()
+          ->unique()
+          ->values()
+          ->toArray();
+      });
+
+      return response()->json($categories);
+    } catch (\Exception $e) {
+      Log::error('Categories endpoint error: ' . $e->getMessage());
       return response()->json(['message' => 'Internal server error'], 500);
     }
   }
