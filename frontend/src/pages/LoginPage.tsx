@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import { loginUser } from "../api/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       await loginUser({username, password});
+      login();
       navigate("/products");
     } catch (err) {
       console.log(err);
