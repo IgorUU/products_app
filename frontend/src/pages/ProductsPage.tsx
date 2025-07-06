@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../api/products";
 import Product from "../components/Product";
+import LogoutUser from "../components/Logout";
 
 type ProductType = {
   naziv: string;
@@ -39,12 +40,17 @@ const ProductsPage = () => {
   if (error) return <p style={{ color: "red" }}>{error}</p>
 
   return (
-    <div>
-      <h1>Products</h1>
-      {products.map((product) => (
-        <Product key={product.sku} product={product} />
-      ))}
-    </div>
+    <>
+      <div>
+        <LogoutUser />
+      </div>
+      <div>
+        <h1>Products</h1>
+        {products.map((product) => (
+          <Product key={product.sku} product={product} />
+        ))}
+      </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
-import { getCurrentUser } from "../api/auth";
+import { getCurrentUser, logoutUser } from "../api/auth";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -33,9 +33,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(false);
   };
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    navigate("/");
+  const logout = async () => {
+    try {
+      await logoutUser();
+      setIsAuthenticated(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed: ", error);
+      setIsAuthenticated(false);
+      navigate("/");
+    }
   };
 
   return (
