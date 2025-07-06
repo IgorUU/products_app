@@ -52,11 +52,11 @@ class ProductController extends Controller
    */
   protected function applyFilters(Collection $products, Request $request): array
   {
-    if ($request->has('category') && $request->category !== '') {
+    if ($request->has('category') && $request->filled('category')) {
       $products = $products->filter(fn($product) => isset($product['categoryName']) && strtolower($product['categoryName']) === strtolower($request->category));
     }
 
-    if ($request->has('search') && $request->search !== '') {
+    if ($request->has('search') && $request->filled('search')) {
       $search_term = strtolower($request->search);
       $products = $products->filter(function ($product) use ($search_term) {
         $product_name = strtolower($product['naziv'] ?? '');
