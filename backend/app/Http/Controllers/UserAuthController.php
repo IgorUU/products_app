@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 class UserAuthController extends Controller
 {
-  public function login(Request $request): JsonResponse {
+  public function login(Request $request): JsonResponse
+  {
     $response = Http::post(config('services.konovo.url') . '/' . LOGIN_ENDPOINT, [
       'username' => $request->input('username'),
       'password' => $request->input('password'),
@@ -42,10 +43,23 @@ class UserAuthController extends Controller
     return response()->json(['message' => 'Invalid credentials'], 401);
   }
 
-  public function logout(): JsonResponse {
+  public function logout(): JsonResponse
+  {
     return response()->json([
       'message' => 'Logged out successfully',
     ])->cookie('auth_token', '', -1);
   }
 
+  public function user(Request $request): JsonResponse
+  {
+    $token = $request->cookie('auth_token');
+
+    if (!$token) {
+      return response()->json(['authenticated' => false], 401);
+    }
+
+    return response()->json([
+      'authenticated' => true,
+    ]);
+  }
 }
