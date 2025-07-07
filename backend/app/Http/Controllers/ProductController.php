@@ -19,6 +19,9 @@ class ProductController extends Controller
     protected ProductTransformationService $productTransformationService
   ) {}
 
+  /**
+   * Returns transformed and filtered products.
+   */
   public function getProducts(Request $request): JsonResponse
   {
     try {
@@ -42,6 +45,9 @@ class ProductController extends Controller
     }
   }
 
+  /**
+   * Returns the product with the specified ID.
+   */
   public function getProductById(Request $request, string $product_id): JsonResponse
   {
     try {
