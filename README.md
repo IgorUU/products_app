@@ -1,18 +1,18 @@
 # 🛒 Products App
 
-It features a Laravel backend and a React (TypeScript) frontend.
-The app fetches and processes product data from an external API (Konovo).
+It features a Laravel backend and a React (TypeScript) frontend. \
+The app fetches and processes product data from an external API (Konovo).\
 Supports filtering and search, and it displays product details.
 
 ---
 
 ## 🚀 Features
 
-✅ JWT-based authentication (secure cookie)
-✅ Products listing with price & description transformation
-✅ Filter & search by category and text
-✅ Product details page
-✅ Laravel + React + TypeScript + Axios + Vite + React Router
+✅ JWT-based authentication (secure cookie)\
+✅ Products listing with price & description transformation\
+✅ Filter & search by category and text\
+✅ Product details page\
+✅ Laravel + React + TypeScript + Axios + Vite + React Router\
 ✅ RESTful, clean, idiomatic, and robust
 
 ---
@@ -34,7 +34,6 @@ Supports filtering and search, and it displays product details.
 - Composer
 - Node.js >= 20 + npm
 - SQLite
-- (optional) DBeaver or SQLite viewer to inspect DB
 
 ---
 
