@@ -97,5 +97,5 @@ Use the provided credentials in the task description to login.
 
 ## 👨‍💻 Author
 
-Built by Igor Ušumović as part of a job application task.
+Built by Igor Ušumović as part of a job application task.\
 💼 Clean, robust, and production-ready architecture — feedback welcome!
