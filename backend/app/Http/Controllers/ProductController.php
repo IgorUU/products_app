@@ -19,7 +19,7 @@ class ProductController extends Controller
     protected ProductTransformationService $productTransformationService
   ) {}
 
-  public function index(Request $request): JsonResponse
+  public function getProducts(Request $request): JsonResponse
   {
     try {
       $token = $request->cookie('auth_token');
@@ -28,19 +28,13 @@ class ProductController extends Controller
         return response()->json(['message' => 'Authorization token required'], 401);
       }
 
-      $response = Http::withHeaders([
-        'Authorization' => "Bearer {$token}",
-      ])->get(config('services.konovo.url') . '/products');
+      $products = $this->getAllProducts($request, $token);
 
-      if (!$response->successful()) {
-        Log::error('Konovo API error: ' . $response->body());
+      if (empty($products)) {
         return response()->json(['message' => 'Internal server error'], 500);
       }
 
-      $products = $response->json();
-      $transformed_products = $this->productTransformationService->transform($products);
-      $filtered_products = $this->applyFilters(collect($transformed_products), $request);
-
+      $filtered_products = $this->applyFilters(collect($products), $request);
       return response()->json($filtered_products);
     } catch (\Exception $e) {
       Log::error('Products endpoint error: ' . $e->getMessage());
@@ -48,10 +42,58 @@ class ProductController extends Controller
     }
   }
 
+  public function getProductById(Request $request, string $product_id): JsonResponse
+  {
+    try {
+      $token = $request->cookie('auth_token');
+
+      if (!$token) {
+        return response()->json(['message' => 'Authorization token required'], 401);
+      }
+
+      $products = $this->getAllProducts($request, $token);
+
+      if (empty($products)) {
+        return response()->json(['message' => 'Internal server error'], 500);
+      }
+
+      $product = collect($products)->firstWhere('sif_product', $product_id);
+
+      if (!$product) {
+        return response()->json(['message' => 'Product not found'], 404);
+      }
+
+      return response()->json($product);
+    } catch (\Exception $e) {
+      Log::error('Products endpoint error: ' . $e->getMessage());
+      return response()->json(['message' => 'Internal server error'], 500);
+    }
+  }
+
+  /**
+   * Get all products from the API.
+   */
+  protected function getAllProducts(Request $request, string $token): array
+  {
+    return Cache::remember('all_products', 1800, function () use ($request, $token) {
+      $response = Http::withHeaders([
+        'Authorization' => "Bearer {$token}",
+      ])->get(config('services.konovo.url') . '/products');
+
+      if (!$response->successful()) {
+        Log::error('Konovo API error ' . $response->body());
+        return [];
+      }
+
+      $products = $response->json();
+      return $this->productTransformationService->transform($products);
+    });
+  }
+
   /**
    * Get product categories.
    */
-  public function categories(Request $request): JsonResponse
+  public function getCategories(Request $request): JsonResponse
   {
     try {
       $token = $request->cookie('auth_token');
