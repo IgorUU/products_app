@@ -3,6 +3,7 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
   return (
@@ -13,6 +14,14 @@ function App() {
         element={
           <ProtectedRoute>
             <ProductsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products/:id"
+        element={
+          <ProtectedRoute>
+            <ProductDetailsPage />
           </ProtectedRoute>
         }
       />

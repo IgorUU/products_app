@@ -4,6 +4,7 @@ import Product from "../components/Product";
 import LogoutUser from "../components/Logout";
 import ProductFilters from "../components/ProductFilters";
 import { useDebounce } from "../hooks/useDebounce";
+import { Link } from "react-router-dom";
 
 type ProductType = {
   naziv: string;
@@ -80,7 +81,13 @@ const ProductsPage = () => {
           categories={categories}
         />
         {products.map((product) => (
-          <Product key={product.sif_product} product={product} />
+          <Link
+            key={product.sif_product}
+            to={`/products/${product.sif_product}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Product product={product} />
+          </Link>
         ))}
       </div>
     </>
