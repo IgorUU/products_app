@@ -15,6 +15,7 @@ type ProductType = {
   description: string;
   imgsrc: string;
   categoryName: string;
+  sif_product: string;
 };
 
 const ProductsPage = () => {
@@ -78,9 +79,8 @@ const ProductsPage = () => {
           setSearch={setSearch}
           categories={categories}
         />
-        {/* Composite key: sku repeats, added index for uniqueness */}
-        {products.map((product, index) => (
-          <Product key={`${product.sku}-${index}`} product={product} />
+        {products.map((product) => (
+          <Product key={product.sif_product} product={product} />
         ))}
       </div>
     </>
