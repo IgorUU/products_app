@@ -78,8 +78,9 @@ const ProductsPage = () => {
           setSearch={setSearch}
           categories={categories}
         />
-        {products.map((product) => (
-          <Product key={product.sku} product={product} />
+        {/* Composite key: sku repeats, added index for uniqueness */}
+        {products.map((product, index) => (
+          <Product key={`${product.sku}-${index}`} product={product} />
         ))}
       </div>
     </>
