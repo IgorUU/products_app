@@ -67,7 +67,7 @@ class ProductController extends Controller
 
         if (!$response->successful()) {
           Log::error('Konovo API error: ' . $response->body());
-          return response()->json(['message' => 'Internal server error'], 500);
+          return [];
         }
 
         $products = $response->json();
