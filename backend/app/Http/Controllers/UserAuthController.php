@@ -24,12 +24,15 @@ class UserAuthController extends Controller
         return response()->json(['message' => 'Authentication failed'], 500);
       }
 
+      // TODO: For better security and UX, implement refresh tokens.
+      // This would allow seamless session renewal without frequent logins.
+      // Out of current scope, but recommended for future improvement.
       return response()->json([
         'message' => 'Login successful',
       ])->cookie(
         'auth_token',
         $response_data['token'],
-        60 * 24 * 2,
+        60,
         '/',
         null,
         false,
