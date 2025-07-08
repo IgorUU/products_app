@@ -48,6 +48,10 @@ composer install
 # Copy .env and adjust if needed
 cp .env.example .env
 
+# In the newly created `.env` file, set the `KONOVO_API_URL` variable to Konovo API URL.
+
+KONOVO_API_URL=https://your-konovo-api.example.com
+
 # Generate app key (if not already)
 php artisan key:generate
 
