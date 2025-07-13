@@ -1,7 +1,7 @@
 # 🛒 Products App
 
 It features a Laravel backend and a React (TypeScript) frontend. \
-The app fetches and processes product data from an external API (Konovo).\
+The app fetches and processes product data from an external API.\
 Supports filtering and search, and it displays product details.
 
 ---
