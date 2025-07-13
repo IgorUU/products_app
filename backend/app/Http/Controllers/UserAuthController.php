@@ -11,7 +11,7 @@ class UserAuthController extends Controller
 {
   public function login(Request $request): JsonResponse
   {
-    $response = Http::post(config('services.konovo.url') . '/' . LOGIN_ENDPOINT, [
+    $response = Http::post(config('services.products.url') . '/' . LOGIN_ENDPOINT, [
       'username' => $request->input('username'),
       'password' => $request->input('password'),
     ]);

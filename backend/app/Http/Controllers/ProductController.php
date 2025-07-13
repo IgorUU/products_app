@@ -84,10 +84,10 @@ class ProductController extends Controller
     return Cache::remember('all_products', 1800, function () use ($request, $token) {
       $response = Http::withHeaders([
         'Authorization' => "Bearer {$token}",
-      ])->get(config('services.konovo.url') . '/products');
+      ])->get(config('services.products.url') . '/products');
 
       if (!$response->successful()) {
-        Log::error('Konovo API error ' . $response->body());
+        Log::error('Products API error ' . $response->body());
         return [];
       }
 
@@ -111,10 +111,10 @@ class ProductController extends Controller
       $categories = Cache::remember('product_categories', 3600, function () use ($token) {
         $response = Http::withHeaders([
           'Authorization' => "Bearer {$token}",
-        ])->get(config('services.konovo.url') . '/products');
+        ])->get(config('services.products.url') . '/products');
 
         if (!$response->successful()) {
-          Log::error('Konovo API error: ' . $response->body());
+          Log::error('Products API error: ' . $response->body());
           return [];
         }
 
